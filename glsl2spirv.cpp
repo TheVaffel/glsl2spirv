@@ -18,7 +18,6 @@ VkShaderStageFlagBits getType(std::string file_name){
   // The file endings are subject to Khronos' own usage
   // (https://github.com/KhronosGroup/glslang#execution-of-standalone-wrapper)
   if(ending ==".vert"){
-    printf("This is a Vertex shader\n");
     return VK_SHADER_STAGE_VERTEX_BIT;
   }
   else if(ending ==".tesc"){
@@ -31,7 +30,6 @@ VkShaderStageFlagBits getType(std::string file_name){
     return VK_SHADER_STAGE_GEOMETRY_BIT;
   }
   else if(ending ==".frag"){
-    printf("This is a fragment shader\n");
     return VK_SHADER_STAGE_FRAGMENT_BIT;
   }
   else if(ending ==".comp"){
@@ -65,12 +63,7 @@ int main(int argc, const char** argv){
     std::vector<unsigned int> spirv;
     VkShaderStageFlagBits stage = getType(std::string(argv[i]));
     
-    if(GLSLtoSPV(stage, source.c_str(), spirv)){
-      printf("The first part of the spirv is:\n");
-      for(int i = 0; i < 10; i++){
-	printf("0x%x\n", spirv[i]);
-      }
-    }else{
+    if(!GLSLtoSPV(stage, source.c_str(), spirv)){
       printf("Compilation of source file %s failed!\n", argv[i]);
       exit(-1);
     }
@@ -80,15 +73,16 @@ int main(int argc, const char** argv){
       printf("Could not disassemble!\n");
     }
     
-    printf("Disassembly:\n\n%s\n", disassembly.c_str());
     std::string line;
     std::istringstream stream(disassembly);
+    printf("\nDisassemble of %s:\n\n", argv[i]);
     while(std::getline(stream, line)){
       if(line[0] != '%'){
         printf("\t");
       }
       printf("%s\n", line.c_str());
     }
+    printf("\n");
   }
   
   
