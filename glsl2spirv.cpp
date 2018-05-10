@@ -57,7 +57,11 @@ int main(int argc, const char** argv){
   for(int i = 1; i < argc; i++){
     std::ifstream file_stream(argv[i]);
     std::stringstream buf;
+
     buf << file_stream.rdbuf();
+
+    file_stream.close();
+    
     std::string source = buf.str();
 
     std::vector<unsigned int> spirv;
