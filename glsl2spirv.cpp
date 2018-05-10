@@ -4,6 +4,7 @@
 
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <vector>
 
 VkShaderStageFlagBits getType(std::string file_name){
@@ -78,8 +79,16 @@ int main(int argc, const char** argv){
     if(!disassembler.Disassemble(spirv, &disassembly)){
       printf("Could not disassemble!\n");
     }
-
+    
     printf("Disassembly:\n\n%s\n", disassembly.c_str());
+    std::string line;
+    std::istringstream stream(disassembly);
+    while(std::getline(stream, line)){
+      if(line[0] != '%'){
+        printf("\t");
+      }
+      printf("%s\n", line.c_str());
+    }
   }
   
   
