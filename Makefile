@@ -18,7 +18,7 @@ LIBS = -l glslang -l OSDependent -l SPIRV -l OGLCompiler -l HLSL -l pthread -l S
 
 CC=g++
 
-glsl2spirv: 
+glsl2spirv: glsl2spirv.cpp
 	${CC} -std=c++11 glsl_util.cpp glsl2spirv.cpp -o $@ ${INCLUDES} ${LIB_DIRS} ${LIBS}
 
 
